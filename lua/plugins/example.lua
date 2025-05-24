@@ -1,6 +1,6 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+-- if true then return {} end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -15,7 +15,7 @@ return {
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
-    opts = {
+    opts = { 
       colorscheme = "gruvbox",
     },
   },
@@ -64,17 +64,29 @@ return {
   },
 
   -- add pyright to lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
+{
+  "neovim/nvim-lspconfig",
+  ---@class PluginLspOpts
+  opts = {
+    ---@type lspconfig.options
+    servers = {
+      pyright = {
+        settings = {
+          python = {
+            pythonPath = (function()
+              local cwd = vim.fn.getcwd()
+              local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+              return is_windows
+                  and (cwd .. "\\.venv\\Scripts\\python.exe")
+                  or (cwd .. "/.venv/bin/python")
+            end)()
+          }
+        }
       },
     },
   },
+},
+
 
   -- add tsserver and setup with typescript.nvim instead of lspconfig
   {
@@ -177,7 +189,7 @@ return {
   },
 
   -- use mini.starter instead of alpha
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
+  -- { import = "lazyvim.plugins.extras.ui.mini-starter" },
 
   -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
   { import = "lazyvim.plugins.extras.lang.json" },
