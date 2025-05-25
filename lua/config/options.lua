@@ -68,3 +68,10 @@ vim.opt.virtualedit:append("block")
 
 -- signcolumnの優先順位（エラー/警告/ヒントの表示順）
 vim.diagnostic.config({ severity_sort = true })
+
+-- Define Space as your leader early
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Make Space do nothing in normal & visual
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
