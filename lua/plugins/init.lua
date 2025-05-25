@@ -6,6 +6,7 @@ return vim.tbl_flatten({
   require("plugins.fzf"),
   require("plugins.lsp_python"),
   require("plugins.lsp_typescript"),
+  require("plugins.lsp"),
   require("plugins.mason"),
   require("plugins.telescope"),
   require("plugins.todo_comments"), 
