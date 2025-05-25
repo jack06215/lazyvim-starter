@@ -1,3 +1,5 @@
+local python_venv_util = require("utils.python_venv")
+
 return {
   {
     "nvim-lualine/lualine.nvim",
@@ -20,30 +22,37 @@ return {
         return "🔧 No LSP"
       end
 
-      -- Python venv with Poetry-first and sysname fallbacks
+      -- -- Python venv with Poetry-first and sysname fallbacks
+      -- local function python_venv()
+      --   local cwd    = vim.fn.getcwd()
+      --   local sysname = vim.loop.os_uname().sysname
+
+      --   -- Try Poetry
+      --   local poetry_env = vim.fn.system("poetry env info -p")
+      --   poetry_env = vim.fn.trim(poetry_env)
+      --   if vim.v.shell_error == 0 and poetry_env ~= "" then
+      --     if sysname == "Windows_NT" then
+      --       return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
+      --     else
+      --       return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
+      --     end
+      --   end
+
+      --   -- Fallbacks
+      --   if sysname == "Windows_NT" then
+      --     return "🐍 " .. vim.fn.fnamemodify(cwd .. "\\.venv\\Scripts\\python.exe", ":t")
+      --   elseif sysname == "Linux" and vim.fn.has("android") == 1 and vim.fn.executable("termux-setup-storage") == 1 then
+      --     return "🐍 termux-python"
+      --   else
+      --     return "🐍 " .. vim.fn.fnamemodify(cwd .. "/.venv/bin/python", ":t")
+      --   end
+      -- end
+
       local function python_venv()
-        local cwd    = vim.fn.getcwd()
-        local sysname = vim.loop.os_uname().sysname
-
-        -- Try Poetry
-        local poetry_env = vim.fn.system("poetry env info -p")
-        poetry_env = vim.fn.trim(poetry_env)
-        if vim.v.shell_error == 0 and poetry_env ~= "" then
-          if sysname == "Windows_NT" then
-            return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
-          else
-            return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
-          end
+        if python_venv_util.cached ~= "" then
+          return "🐍 " .. python_venv_util.cached
         end
-
-        -- Fallbacks
-        if sysname == "Windows_NT" then
-          return "🐍 " .. vim.fn.fnamemodify(cwd .. "\\.venv\\Scripts\\python.exe", ":t")
-        elseif sysname == "Linux" and vim.fn.has("android") == 1 and vim.fn.executable("termux-setup-storage") == 1 then
-          return "🐍 termux-python"
-        else
-          return "🐍 " .. vim.fn.fnamemodify(cwd .. "/.venv/bin/python", ":t")
-        end
+        return ""
       end
 
       -- Git branch
