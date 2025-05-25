@@ -40,7 +40,7 @@ git clone git@github.com:jack06215/lazyvim-starter.git $env:LOCALAPPDATA\nvim
 - MacOS
 
 ```sh
-git clone https://github.com/LazyVim/starter ~/.config/nvim
+git clone git@github.com:jack06215/lazyvim-starter.git ~/.config/nvim
 ```
 
 Start Neovim
