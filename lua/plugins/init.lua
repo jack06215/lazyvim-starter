@@ -8,5 +8,6 @@ return vim.tbl_flatten({
   require("plugins.telescope"),
   require("plugins.todo_comments"), 
   require("plugins.treesitter"),
+  require("plugins.fzf"),
   require("plugins.ui"),
 })
