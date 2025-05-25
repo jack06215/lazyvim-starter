@@ -20,17 +20,30 @@ return {
         return "🔧 No LSP"
       end
 
-      -- Python venv
+      -- Python venv with Poetry-first and sysname fallbacks
       local function python_venv()
-        local venv = os.getenv("VIRTUAL_ENV")
-          or os.getenv("CONDA_DEFAULT_ENV")
-          or (function()
-            local cwd = vim.fn.getcwd()
-            if vim.fn.isdirectory(cwd .. "/.venv") == 1 then
-              return ".venv"
-            end
-          end)()
-        return venv and ("🐍 " .. vim.fn.fnamemodify(venv, ":t")) or ""
+        local cwd    = vim.fn.getcwd()
+        local sysname = vim.loop.os_uname().sysname
+
+        -- Try Poetry
+        local poetry_env = vim.fn.system("poetry env info -p")
+        poetry_env = vim.fn.trim(poetry_env)
+        if vim.v.shell_error == 0 and poetry_env ~= "" then
+          if sysname == "Windows_NT" then
+            return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
+          else
+            return "🐍 " .. vim.fn.fnamemodify(poetry_env, ":t")
+          end
+        end
+
+        -- Fallbacks
+        if sysname == "Windows_NT" then
+          return "🐍 " .. vim.fn.fnamemodify(cwd .. "\\.venv\\Scripts\\python.exe", ":t")
+        elseif sysname == "Linux" and vim.fn.has("android") == 1 and vim.fn.executable("termux-setup-storage") == 1 then
+          return "🐍 termux-python"
+        else
+          return "🐍 " .. vim.fn.fnamemodify(cwd .. "/.venv/bin/python", ":t")
+        end
       end
 
       -- Git branch
