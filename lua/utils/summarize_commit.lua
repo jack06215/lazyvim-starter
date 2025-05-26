@@ -52,7 +52,7 @@ end
 local function generate_with_ollama(prompt, diff)
   -- Prepare input with prompt and diff
   local input_with_diff = prompt .. "\n" .. diff
-  local json_payload = vim.json.encode({ model = "qwen2.5-coder:32b", prompt = input_with_diff, stream = false })
+  local json_payload = vim.json.encode({ model = "llama3-elyza:jp8b", prompt = input_with_diff, stream = false })
 
   -- Construct and execute command
   local command =
