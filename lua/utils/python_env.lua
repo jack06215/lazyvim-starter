@@ -58,11 +58,11 @@ function M.get_name()
 end
 
 -- re-run on BufEnter / DirChanged / VimEnter
-local group = vim.api.nvim_create_augroup("PythonEnvDetect", { clear = true })
-vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter", "DirChanged" }, {
-  group = group,
-  callback = M.update,
-})
+-- local group = vim.api.nvim_create_augroup("PythonEnvDetect", { clear = true })
+-- vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter", "DirChanged" }, {
+--   group = group,
+--   callback = M.update,
+-- })
 
 -- initial detect
 M.update()
