@@ -7,6 +7,7 @@ return vim.tbl_flatten({
   require("plugins.github_copilot"),
   require("plugins.lsp"),
   require("plugins.mason"),
+  require("plugins.nvim-tree"),
   require("plugins.owner_code_search"),
   require("plugins.python"),
   require("plugins.summarize_commit"),
