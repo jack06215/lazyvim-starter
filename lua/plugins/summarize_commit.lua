@@ -10,12 +10,12 @@ return {
       end,
       desc = "[Ollama] Summarize commit",
     },
-    {
-      "<leader>aio",
-      function()
-        require("utils.summarize_commit").summarize_commit_openai()
-      end,
-      desc = "[OpenAI] Summarize commit",
-    },
+    -- {
+    --   "<leader>aio",
+    --   function()
+    --     require("utils.summarize_commit").summarize_commit_openai()
+    --   end,
+    --   desc = "[OpenAI] Summarize commit",
+    -- },
   },
 }
