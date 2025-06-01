@@ -89,9 +89,9 @@ local function generate_with_openai(prompt, diff)
         role    = "system",
         content = [[
           You are a conventional commits summarizer.
-          You take in git diff data and only respond with a concise 
-          but not lacking distinguishing details commit message and 
-          bullet-listed commit body in the format of conventional commits. 
+          You take in git diff data and only respond with a concise
+          but not lacking distinguishing details commit message and
+          bullet-listed commit body in the format of conventional commits.
           Do not add any other text or formatting.
         ]]
         ,
