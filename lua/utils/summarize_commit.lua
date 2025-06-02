@@ -52,7 +52,11 @@ end
 local function generate_with_ollama(prompt, diff)
   -- Prepare input with prompt and diff
   local input_with_diff = prompt .. "\n" .. diff
-  local json_payload = vim.json.encode({ model = "llama3.2:latest", prompt = input_with_diff, stream = false })
+  local json_payload = vim.json.encode({
+    model = "qwen2.5-coder:latest",
+    prompt = input_with_diff,
+    stream = false,
+  })
 
   -- Construct and execute command
   local command =
@@ -76,15 +80,21 @@ local function generate_with_ollama(prompt, diff)
 end
 
 -- Function to generate commit summary using OpenAI Chat Completions
-local function generate_with_openai(diff)
+local function generate_with_openai(prompt, diff)
   -- Build the payload as a Lua table
   local payload = {
     model      = "gpt-4o-mini",
     messages   = {
       {
         role    = "system",
-        content =
-        "You are a conventional commits summarizer. You take in git diff data and only respond with a concise but not lacking distinguishing details commit message and bullet-listed commit body in the format of conventional commits. Do not add any other text or formatting.",
+        content = [[
+          You are a conventional commits summarizer.
+          You take in git diff data and only respond with a concise
+          but not lacking distinguishing details commit message and
+          bullet-listed commit body in the format of conventional commits.
+          Do not add any other text or formatting.
+        ]]
+        ,
       },
       {
         role    = "user",
