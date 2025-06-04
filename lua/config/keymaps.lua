@@ -4,3 +4,7 @@
 vim.keymap.set("n", "<leader>ul", function()
   vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end, { desc = "Toggle Relative Line Numbers" })
+
+-- Disable LazyVim
+vim.keymap.del("n", "<leader>gG")
+vim.keymap.del("n", "<leader>gg")
