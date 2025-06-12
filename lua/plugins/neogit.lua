@@ -1,7 +1,8 @@
 -- lua/plugins/neogit.lua
 return {
   "NeogitOrg/neogit",
-  cmd = "Neogit",
+  lazy = false,
+  -- cmd = { "Neogit" },
   keys = {
     {
       "<leader>gg",
