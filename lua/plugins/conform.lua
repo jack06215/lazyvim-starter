@@ -1,19 +1,35 @@
 return {
-  'stevearc/conform.nvim',
+  "stevearc/conform.nvim",
+  event = { "BufReadPre", "BufNewFile" },
   opts = {
-    require("conform").setup({
-      formatters_by_ft = {
-        lua = { "stylua" },
-        python = { "isort", "black", "mypy" },
-        typescriptreact = { "prettier" },
-        typescript = { "prettier" },
-      },
-    }),
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      callback = function(args)
-        -- Wiat for 3 seconds.
-        require("conform").format({ bufnr = args.buf, timeout_ms = 5000 })
+    formatters_by_ft = {
+      javascript = { "prettier" },
+      typescript = { "prettier" },
+      javascriptreact = { "prettier" },
+      typescriptreact = { "prettier" },
+      svelte = { "prettier" },
+      css = { "prettier" },
+      html = { "prettier" },
+      json = { "prettier" },
+      yaml = { "prettier" },
+      markdown = { "prettier" },
+      graphql = { "prettier" },
+      lua = { "stylua" },
+      python = { "isort", "black" },
+    },
+  },
+  keys = {
+    {
+      "<leader>mp",
+      function()
+        require("conform").format({
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 500,
+        })
       end,
-    })
+      mode = { "n", "v" },
+      desc = "Format file or range (in visual mode)",
+    },
   },
 }
