@@ -1,33 +1,79 @@
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    init = function()
-      -- force git instead of curl
-      local install = require("nvim-treesitter.install")
-      install.prefer_git = true
-
-      -- ensure a compiler is available
-      install.compilers = { "gcc", "clang" }
-    end,
-    opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "bash",
-        "html",
-        "javascript",
-        "json",
-        "json5",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-      })
-      opts.auto_install = true
-    end,
-  },
+local ts_packages = {
+  "bash",
+  "bibtex",
+  "cmake",
+  "cpp",
+  "cuda",
+  "glsl",
+  "html",
+  "javascript",
+  "json",
+  "jsonc",
+  "latex",
+  "lua",
+  "make",
+  "markdown",
+  "markdown_inline",
+  "nim",
+  "nim_format_string",
+  "proto",
+  "python",
+  "rust",
+  "regex",
+  "toml",
+  "tsx",
+  "typescript",
+  "vim",
+  "vimdoc",
+  "vue",
+  "yaml",
 }
+
+local M = {
+  "nvim-treesitter/nvim-treesitter",
+  dependencies = { "sustech-data/wildfire.nvim" },
+  version = false,
+  build = ":TSUpdateSync",
+  event = "BufReadPre",
+  cmd = { "TSUpdate", "TSUpdateSync" },
+}
+
+M.config = function()
+  require("nvim-treesitter.configs").setup({
+    modules = {},
+    auto_install = true,
+    ensure_installed = ts_packages,
+    sync_install = false,
+    ignore_install = {},
+    autopairs = { enable = true },
+    highlight = {
+      enable = true,
+      disable = {
+        "latex",
+        "tex",
+        "markdown",
+        "sh",
+        "bash",
+        "zsh",
+      },
+      additional_vim_regex_highlighting = false,
+    },
+    indent = {
+      enable = true,
+      disable = {
+        "python",
+        "yaml",
+      },
+    },
+    incremental_selection = { enable = false }, -- wildfire does a better job
+  })
+  require("wildfire").setup({
+    keymaps = {
+      init_selection = "gn",
+      node_incremental = "]]",
+      node_decremental = "[[",
+    },
+  })
+end
+
+return M
