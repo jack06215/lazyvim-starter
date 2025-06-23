@@ -1,52 +1,61 @@
--- ~/.config/nvim/lua/plugins/ui.lua
-
--- Utility for detecting & caching Python env (Poetry, .venv, system)
-local python_env = require("utils.python_env")
+-- enabled if noice.nvim is off
+vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+  config = config or {}
+  config.focus_id = ctx.method
+  if not (result and result.contents) then
+    return
+  end
+  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+  if vim.tbl_isempty(markdown_lines) then
+    return
+  end
+  return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+end
 
 return {
   {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      -- 📁 Current Directory
-      local function current_directory()
-        return "📁 " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-      end
+    "neovim/nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = false },
+    },
+  },
+  {
+    "aznhe21/actions-preview.nvim",
+    event = "LspAttach",
+    dependencies = {
+      {
+        "neovim/nvim-lspconfig",
+        opts = function()
+          local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
-      -- 🔧 Active LSP
-      local function active_lsp()
-        local buf_ft = vim.bo.filetype
-        local clients = vim.lsp.get_active_clients()
-        for _, client in ipairs(clients) do
-          if client.config
-             and client.config.filetypes
-             and vim.tbl_contains(client.config.filetypes, buf_ft)
-          then
-            return "🔧 " .. client.name
-          end
-        end
-        return "🔧 No LSP"
-      end
-
-      -- 🐍 Python venv / Poetry env
-      local function python_venv()
-        local name = python_env.get_name()
-        return (name ~= "" and ("🐍 " .. name)) or ""
-      end
-
-      --  Git branch via gitsigns
-      local function git_branch()
-        local branch = vim.b.gitsigns_head
-        return (branch and (" " .. branch)) or ""
-      end
-
-      -- Extend the 'x' section of the statusline
-      vim.list_extend(opts.sections.lualine_x, {
-        current_directory,
-        active_lsp,
-        python_venv,
-        git_branch,
-      })
-    end,
+          keys[#keys + 1] = { "<leader>ca", false }
+        end,
+      },
+    },
+    opts = {
+      backend = { "nui" },
+      diff = {
+        algorithm = "patience",
+        ignore_whitespace = true,
+      },
+    },
+    keys = {
+      {
+        "<leader>ca",
+        function()
+          require("actions-preview").code_actions()
+        end,
+        mode = { "n", "v" },
+        desc = "Code Action Preview",
+      },
+    },
+  },
+  {
+    "0oAstro/dim.lua",
+    event = "LspAttach",
+    opts = {
+      disable_lsp_decorations = true,
+    },
   },
 }

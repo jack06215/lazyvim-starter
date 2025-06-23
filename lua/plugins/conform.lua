@@ -15,7 +15,13 @@ return {
       markdown = { "prettier" },
       graphql = { "prettier" },
       lua = { "stylua" },
-      python = { "isort", "ruff_format" },
+      python = { "ruff_format" },
+      proto = { "buf" },
+      bazel = { "buildifier" },
+    },
+    format_on_save = {
+      timeout_ms = 1000,
+      lsp_fallback = true,
     },
   },
   keys = {

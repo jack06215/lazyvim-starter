@@ -13,7 +13,12 @@ return {
       javascriptreact = { "eslint_d" },
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
-      python = { "mypy" },
+      python = { "mypy" }, -- Or "ruff" or "flake8" (pick one)
+      proto = { "buf" },
+      sql = { "sqlfluff" },
+      markdown = { "markdownlint" },
+      yaml = { "yamllint" },
+      bash = { "shellcheck" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
