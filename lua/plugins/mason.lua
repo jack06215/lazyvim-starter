@@ -1,34 +1,55 @@
-return {
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "stylua",
-        "shellcheck",
-        "shfmt",
-        "flake8",
-      },
-    },
-    config = function(_, opts)
-      local mason = require("mason")
-      mason.setup({
-        ui = {
-          icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗",
-          },
-        },
-      })
-
-      -- Apply ensure_installed from opts
-      local registry = require("mason-registry")
-      for _, tool in ipairs(opts.ensure_installed or {}) do
-        local ok, pkg = pcall(registry.get_package, tool)
-        if ok and not pkg:is_installed() then
-          pkg:install()
-        end
-      end
-    end,
+local M = {
+  "williamboman/mason.nvim",
+  event = "VeryLazy",
+  dependencies = {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
   },
 }
+
+M.tools = {
+  -- DAP
+  "debugpy",
+
+  -- Linters
+  "buf",
+  "cmakelang",
+  "cpplint",
+  "eslint_d",
+  "flake8", -- if using flake8 instead of ruff
+  "markdownlint",
+  "mypy",
+  "pylint",
+  "yamllint",
+  "shellcheck",
+
+  -- Formatters
+  "autopep8",
+  "black",
+  "cmakelang",
+  "isort",
+  "prettier",
+  "ruff",
+  "shfmt",
+  "stylua",
+}
+
+M.config = function()
+  require("mason").setup({
+    ui = {
+      icons = {
+        package_installed = "✓",
+        package_pending = "➜",
+        package_uninstalled = "✗",
+      },
+    },
+    PATH = "append",
+  })
+
+  require("mason-tool-installer").setup({
+    ensure_installed = M.tools,
+    auto_update = true,
+    run_on_start = true,
+  })
+end
+
+return M
