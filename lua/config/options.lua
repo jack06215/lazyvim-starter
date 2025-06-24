@@ -6,6 +6,9 @@
 vim.cmd('language en_US.UTF-8') -- 表示言語を英語にする
 -- vim.cmd("language ja_JP.UTF-8") -- 表示言語を日本語にする
 
+vim.opt.title = true
+vim.opt.titlestring = "nvim"
+
 -- ファイル
 vim.opt.fileencoding = "utf-8" -- エンコーディングをUTF-8に設定
 vim.opt.swapfile = false       -- スワップファイルを作成しない
