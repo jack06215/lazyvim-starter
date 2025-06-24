@@ -21,7 +21,7 @@ M.capabilities = function()
 
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
-    lineFoldingOnly = true,
+    lineFoldingOnly = false,
   }
 
   return capabilities
