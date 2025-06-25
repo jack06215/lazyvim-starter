@@ -7,4 +7,7 @@ end, { desc = "Toggle Relative Line Numbers" })
 
 -- Disable LazyVim
 vim.keymap.del("n", "<leader>gG")
-vim.keymap.del("n", "<leader>gg")
+
+vim.keymap.set("n", "<leader>gg", function()
+  require("neogit").open()
+end, { desc = "Open Neogit" })
