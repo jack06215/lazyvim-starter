@@ -17,7 +17,7 @@ return {
       ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
       ]]
 
-      local header = logo .. "\n\n" .. "      [ @" .. pc_name .. " with " .. nvim_version .. " | " .. today .. " ]"
+      local header = logo .. "\n\n" .. "      1[ @" .. pc_name .. " with " .. nvim_version .. " | " .. today .. " ]"
       logo = string.rep("\n", 8) .. header .. "\n\n"
 
       local opts = {
