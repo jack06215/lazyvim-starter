@@ -48,6 +48,7 @@
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "1b212c2eee76d787bbea6aa5e92a2b534e7b4f8f" },
   "nvim-web-devicons": { "branch": "master", "commit": "19d6211c78169e78bab372b585b6fb17ad974e82" },
   "octo.nvim": { "branch": "master", "commit": "b95f205a0835f8845fef7159a2d0fa229c6f6443" },
+  "package-info.nvim": { "branch": "master", "commit": "4f1b8287dde221153ec9f2acd46e8237d2d0881e" },
   "persistence.nvim": { "branch": "main", "commit": "166a79a55bfa7a4db3e26fc031b4d92af71d0b51" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "py-requirements.nvim": { "branch": "main", "commit": "62363732a45e3200f38b772f4b3c0874f85342ba" },
