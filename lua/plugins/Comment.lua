@@ -46,8 +46,8 @@ function _G.__flip_flop_comment()
   local padding = true
   local is_commented = U.is_commented(ll, rr, padding)
 
-  local rcom = {}         -- ranges of commented lines
-  local cl = s[1]         -- current line
+  local rcom = {} -- ranges of commented lines
+  local cl = s[1] -- current line
   local rs, re = nil, nil -- range start and end
   local lines = U.get_lines(range)
   for _, line in ipairs(lines) do
@@ -58,7 +58,7 @@ function _G.__flip_flop_comment()
       end
     else
       rs = rs or cl -- set range start if not set
-      re = cl       -- update range end
+      re = cl -- update range end
     end
     cl = cl + 1
   end
@@ -111,6 +111,23 @@ local M = {
       "<Cmd>set operatorfunc=v:lua.__flip_flop_comment<CR>g@",
       mode = { "n", "x" },
       desc = "Invert comments",
+    }),
+    silent({
+      "gcA",
+      function()
+        local commentstring = vim.bo.commentstring:gsub("%%s", ""):gsub("%s+$", "")
+        local line = vim.api.nvim_get_current_line()
+        local has_comment = line:find(commentstring, 1, true)
+        if not has_comment then
+          local new_line = line .. " " .. commentstring .. " "
+          vim.api.nvim_set_current_line(new_line)
+          vim.cmd("normal! $a")
+        else
+          vim.cmd("normal! $a")
+        end
+      end,
+      mode = "n",
+      desc = "Comment at end of line",
     }),
     silent({ "gc", commented_lines_textobject, mode = "o", desc = "toggle adjacent comments" }),
     silent({ "u", commented_lines_textobject, mode = "o", desc = "toggle for adjacent comments" }),

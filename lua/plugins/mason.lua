@@ -15,7 +15,7 @@ M.tools = {
   "cmakelang",
   "cpplint",
   "eslint_d",
-  "flake8", -- if using flake8 instead of ruff
+  -- "flake8", -- if using flake8 instead of ruff
   "markdownlint",
   "mypy",
   "pylint",
@@ -26,7 +26,7 @@ M.tools = {
   "autopep8",
   "black",
   "cmakelang",
-  "isort",
+  -- "isort",
   "prettier",
   "ruff",
   "shfmt",

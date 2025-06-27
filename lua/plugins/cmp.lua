@@ -3,17 +3,17 @@ local M = {
   event = "InsertEnter",
   version = false,
   dependencies = {
-    { "hrsh7th/cmp-buffer" },                                        -- buffer completions
-    { "riton/cmp-path",          branch = "feature/get_cwd_array" }, -- path completions
-    { "hrsh7th/cmp-cmdline" },                                       -- cmdline completions
+    { "hrsh7th/cmp-buffer" }, -- buffer completions
+    { "riton/cmp-path", branch = "feature/get_cwd_array" }, -- path completions
+    { "hrsh7th/cmp-cmdline" }, -- cmdline completions
     { "hrsh7th/cmp-calc" },
     { "f3fora/cmp-spell" },
     { "hrsh7th/cmp-emoji" },
     { "hrsh7th/cmp-cmdline" },
     { "saadparwaiz1/cmp_luasnip" },
     { "uga-rosa/cmp-dictionary" }, -- config
-    { "petertriho/cmp-git" },      -- config
-    { "Gelio/cmp-natdat",        config = { cmp_kind_text = "NatDat" } },
+    { "petertriho/cmp-git" }, -- config
+    { "Gelio/cmp-natdat", config = { cmp_kind_text = "NatDat" } },
     { "alexander-born/cmp-bazel" },
     { "L3MON4D3/LuaSnip" },
     { "windwp/nvim-autopairs" },
@@ -57,7 +57,7 @@ M.config = function()
     [types.lsp.CompletionItemKind.Variable] = types.lsp.CompletionItemKind.Method,
     [types.lsp.CompletionItemKind.Snippet] = 0, -- top
     [types.lsp.CompletionItemKind.Keyword] = 0, -- top
-    [types.lsp.CompletionItemKind.Text] = 100,  -- bottom
+    [types.lsp.CompletionItemKind.Text] = 100, -- bottom
   }
   ---@param kind integer: kind of completion entry
   local function modified_kind(kind)

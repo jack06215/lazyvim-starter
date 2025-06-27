@@ -41,11 +41,13 @@ end
 vim.keymap.set("n", "<leader>fp", function()
   local path = vim.api.nvim_buf_get_name(0)
   if path == "" then
-    print("[No Name]")
+    vim.notify("No file path", vim.log.levels.WARN)
   else
-    print(vim.fn.fnamemodify(path, ":.p"))
+    local rel_path = vim.fn.fnamemodify(path, ":.p")
+    vim.fn.setreg("+", rel_path) -- Copy to system clipboard
+    print("Copied: " .. rel_path)
   end
-end, { desc = "Show Relative Path" })
+end, { desc = "Copy Relative Path to Clipboard" })
 
 vim.keymap.set("n", "<leader>pycm", function()
   local path = vim.api.nvim_buf_get_name(0)
@@ -54,7 +56,7 @@ vim.keymap.set("n", "<leader>pycm", function()
   else
     local rel_root = vim.fn.fnamemodify(path, ":.:r") -- relative path, no extension
     local dot_path = rel_root:gsub("/", ".")
-    vim.fn.setreg("+", dot_path)                      -- copy to system clipboard
+    vim.fn.setreg("+", dot_path) -- copy to system clipboard
     vim.notify("Copied to clipboard: " .. dot_path, vim.log.levels.INFO)
   end
 end, { desc = "Copy Python Module Name" })
@@ -79,14 +81,15 @@ vim.keymap.set("n", "<leader>bl", function()
   local current = vim.api.nvim_get_current_buf()
   local bufs = vim.fn.getbufinfo({ buflisted = 1 })
   for _, buf in ipairs(bufs) do
-    if buf.bufnr == current then break end
+    if buf.bufnr == current then
+      break
+    end
     vim.cmd("bd " .. buf.bufnr)
   end
 end, { desc = "Delete Buffers to the Left" })
 
 -- LazyVim
 vim.keymap.del("n", "<leader>gG")
-
 
 -- Neogit
 vim.keymap.set("n", "<leader>gg", function()

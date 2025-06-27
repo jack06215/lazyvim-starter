@@ -3,26 +3,8 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   opts = {
     formatters_by_ft = {
-      javascript = { "prettier" },
-      typescript = { "prettier" },
-      javascriptreact = { "prettier" },
-      typescriptreact = { "prettier" },
-      svelte = { "prettier" },
-      css = { "prettier" },
-      html = { "prettier" },
-      json = { "prettier" },
-      yaml = { "prettier" },
-      markdown = { "prettier" },
-      graphql = { "prettier" },
-      lua = { "stylua" },
-      python = { "ruff_format" },
-      proto = { "buf" },
-      bazel = { "buildifier" },
+      python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
     },
-    -- format_on_save = {
-    --   timeout_ms = 1000,
-    --   lsp_fallback = true,
-    -- },
   },
   keys = {
     {
@@ -31,7 +13,7 @@ return {
         require("conform").format({
           lsp_fallback = true,
           async = false,
-          timeout_ms = 500,
+          timeout_ms = 3000,
         })
       end,
       mode = { "n", "v" },
