@@ -21,9 +21,9 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
-      { "<leader>ppu", function() require("py-requirements").upgrade()     end, desc = "Update Package"      },
-      { "<leader>ppi", function() require("py-requirements").show_description() end, desc = "Package Info"        },
-      { "<leader>ppa", function() require("py-requirements").upgrade_all() end, desc = "Update All Packages" },
+      -- { "<leader>pu", function() require("py-requirements").upgrade()     end, desc = "Update Package"      },
+      -- { "<leader>pi", function() require("py-requirements").show_description() end, desc = "Package Info"        },
+      -- { "<leader>pa", function() require("py-requirements").upgrade_all() end, desc = "Update All Packages" },
     },
   },
 
