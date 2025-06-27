@@ -12,8 +12,52 @@ vim.keymap.set("n", "<leader>bo", function()
 end, { desc = "Delete Other Buffers" })
 
 vim.keymap.set("n", "<leader>bx", function()
-  vim.cmd("bufdo bd")
-end, { desc = "Delete All Buffers" })
+  local choice = vim.fn.confirm("[WARM] Delete ALL buffers?", "&Yes\n&No", 2)
+  if choice == 1 then
+    vim.cmd(":%bd")
+  end
+end, { desc = "Delete All Buffers (Confirm)" })
+
+vim.keymap.set("n", "<leader>bb", function()
+  vim.cmd("b#")
+end, { desc = "Switch to Last Buffer" })
+
+vim.keymap.set("n", "<leader>b#", function()
+  vim.cmd(":echo bufnr('%')")
+end, { desc = "Current Buffer Number" })
+
+for i = 1, 9 do
+  vim.keymap.set("n", "<leader>" .. i, function()
+    local buffers = require("bufferline.state").components
+    local bufnr = buffers[i] and buffers[i].id
+    if bufnr then
+      vim.api.nvim_set_current_buf(bufnr)
+    else
+      vim.notify("No buffer " .. i, vim.log.levels.WARN)
+    end
+  end, { desc = "Go to bufferline buffer " .. i })
+end
+
+vim.keymap.set("n", "<leader>fp", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" then
+    print("[No Name]")
+  else
+    print(vim.fn.fnamemodify(path, ":.p"))
+  end
+end, { desc = "Show Relative Path" })
+
+vim.keymap.set("n", "<leader>pycm", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" then
+    vim.notify("No file associated with current buffer", vim.log.levels.ERROR)
+  else
+    local rel_root = vim.fn.fnamemodify(path, ":.:r") -- relative path, no extension
+    local dot_path = rel_root:gsub("/", ".")
+    vim.fn.setreg("+", dot_path)                      -- copy to system clipboard
+    vim.notify("Copied to clipboard: " .. dot_path, vim.log.levels.INFO)
+  end
+end, { desc = "Copy Python Module Name" })
 
 -- Delete buffers to the right of current buffer
 vim.keymap.set("n", "<leader>br", function()
