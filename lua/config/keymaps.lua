@@ -7,6 +7,39 @@ vim.keymap.set("n", "<leader>ul", function()
   vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end, { desc = "Toggle Relative Line Numbers" })
 
+vim.keymap.set("n", "<leader>bo", function()
+  vim.cmd("%bd|e#")
+end, { desc = "Delete Other Buffers" })
+
+vim.keymap.set("n", "<leader>bx", function()
+  vim.cmd("bufdo bd")
+end, { desc = "Delete All Buffers" })
+
+-- Delete buffers to the right of current buffer
+vim.keymap.set("n", "<leader>br", function()
+  local current = vim.api.nvim_get_current_buf()
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  local found = false
+  for _, buf in ipairs(bufs) do
+    if found and buf.bufnr ~= current then
+      vim.cmd("bd " .. buf.bufnr)
+    end
+    if buf.bufnr == current then
+      found = true
+    end
+  end
+end, { desc = "Delete Buffers to the Right" })
+
+-- Delete buffers to the left of current buffer
+vim.keymap.set("n", "<leader>bl", function()
+  local current = vim.api.nvim_get_current_buf()
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  for _, buf in ipairs(bufs) do
+    if buf.bufnr == current then break end
+    vim.cmd("bd " .. buf.bufnr)
+  end
+end, { desc = "Delete Buffers to the Left" })
+
 -- LazyVim
 vim.keymap.del("n", "<leader>gG")
 
