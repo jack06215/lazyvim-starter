@@ -1,17 +1,20 @@
 return {
   {
-    "github/copilot.vim",
-    lazy = false,
-    init = function()
-      vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#83a598" })
-      vim.api.nvim_set_hl(0, "CopilotAnnotation", { fg = "#03a598" })
-    end,
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    opts = {
+      suggestion = { enabled = true },
+      panel = { enabled = true },
+    },
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    lazy = false,
     opts = {
       model = "claude-sonnet-4",
     },
-  },
+    dependencies = {
+      "zbirenbaum/copilot.lua",
+    },
+  }
 }
