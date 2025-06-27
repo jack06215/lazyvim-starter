@@ -19,8 +19,8 @@ return {
         local clients = vim.lsp.get_active_clients()
         for _, client in ipairs(clients) do
           if client.config
-             and client.config.filetypes
-             and vim.tbl_contains(client.config.filetypes, buf_ft)
+              and client.config.filetypes
+              and vim.tbl_contains(client.config.filetypes, buf_ft)
           then
             return "🔧 " .. client.name
           end
@@ -28,24 +28,24 @@ return {
         return "🔧 No LSP"
       end
 
-      -- 🐍 Python venv / Poetry env
-      local function python_venv()
-        local name = python_env.get_name()
-        return (name ~= "" and ("🐍 " .. name)) or ""
-      end
+      -- -- 🐍 Python venv / Poetry env
+      -- local function python_venv()
+      --   local name = python_env.get_name()
+      --   return (name ~= "" and ("🐍 " .. name)) or ""
+      -- end
 
-      --  Git branch via gitsigns
-      local function git_branch()
-        local branch = vim.b.gitsigns_head
-        return (branch and (" " .. branch)) or ""
-      end
+      -- --  Git branch via gitsigns
+      -- local function git_branch()
+      --   local branch = vim.b.gitsigns_head
+      --   return (branch and (" " .. branch)) or ""
+      -- end
 
       -- Extend the 'x' section of the statusline
       vim.list_extend(opts.sections.lualine_x, {
         current_directory,
         active_lsp,
-        python_venv,
-        git_branch,
+        -- python_venv,
+        -- git_branch,
       })
     end,
   },

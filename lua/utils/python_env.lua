@@ -3,14 +3,14 @@ local M = { _path = nil, _name = nil }
 
 -- internal detection
 local function detect()
-  local cwd    = vim.fn.getcwd()
+  local cwd          = vim.fn.getcwd()
   -- 1) locate project root by .git, pyproject.toml or .venv
   local project_root = util.root_pattern(".git", "pyproject.toml", ".venv")(cwd) or cwd
-  local sys = vim.loop.os_uname().sysname
+  local sys          = vim.loop.os_uname().sysname
 
   -- 2) Poetry venv
-  local poetry_cmd = "cd " .. project_root .. " && poetry env info -p"
-  local p = vim.fn.trim(vim.fn.system(poetry_cmd))
+  local poetry_cmd   = "cd " .. project_root .. " && poetry env info -p"
+  local p            = vim.fn.trim(vim.fn.system(poetry_cmd))
   if vim.v.shell_error == 0 and p ~= "" then
     local bin = sys == "Windows_NT" and (p .. "\\Scripts\\python.exe") or (p .. "/bin/python")
     return bin, vim.fn.fnamemodify(p, ":t")
@@ -28,8 +28,8 @@ local function detect()
 
   -- 4) Termux on Android
   if sys == "Linux"
-     and vim.fn.has("android") == 1
-     and vim.fn.executable("termux-setup-storage") == 1
+      and vim.fn.has("android") == 1
+      and vim.fn.executable("termux-setup-storage") == 1
   then
     return "/data/data/com.termux/files/usr/bin/python", "termux-python"
   end
@@ -64,7 +64,7 @@ end
 --   callback = M.update,
 -- })
 
--- initial detect
-M.update()
+-- -- initial detect
+-- M.update()
 
 return M
