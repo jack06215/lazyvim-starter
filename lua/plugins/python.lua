@@ -51,15 +51,4 @@ return {
       },
     },
   },
-
-  -- which-key: group all <leader>p… mappings
-  {
-    "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<leader>p",  group = " packages/dependencies" },
-        { "<leader>pp", group = "python"                  },
-      },
-    },
-  },
 }
