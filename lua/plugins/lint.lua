@@ -13,7 +13,7 @@ return {
       javascriptreact = { "eslint_d" },
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
-      python = { "mypy", "ruff", "flake8" }, -- Or "ruff" or "flake8" (pick one)
+      python = { "mypy", "ruff" }, -- Or "ruff" or "flake8" (pick one)
       proto = { "buf" },
       sql = { "sqlfluff" },
       markdown = { "markdownlint" },
