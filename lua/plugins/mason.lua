@@ -21,6 +21,7 @@ M.tools = {
   "pylint",
   "yamllint",
   "shellcheck",
+  "jsonnet-language-server",
 
   -- Formatters
   "autopep8",

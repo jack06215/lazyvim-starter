@@ -7,6 +7,8 @@ M.lsp_list = {
   "jsonls",
   "bashls",
   "gopls",
+  -- Foloow https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#jsonnet_ls to use jsonnet_ls
+  "jsonnet_ls",
   -- Add more as needed
 }
 
