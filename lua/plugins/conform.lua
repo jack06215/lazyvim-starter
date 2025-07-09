@@ -4,6 +4,9 @@ return {
   opts = {
     formatters_by_ft = {
       python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
+      jsonnet = { "jsonnetfmt" },
+      json = { "jq" },
+      shell = { "shfmt" },
     },
   },
   keys = {
