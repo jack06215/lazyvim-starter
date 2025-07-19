@@ -1,100 +1,141 @@
-local M = {
-  prompt = [[
-    Read my instruction and follow it carefully.
+local M = {}
 
-    <<INSTRUCTION START>>
-    Generate a commit summary using conventional commit format from
-    the output of a git diff that starts after the word <<DIFF START>>
+-- your original prompt header
+M.prompt = [[
+Read my instruction and follow it carefully.
 
-    --------
+<<INSTRUCTION START>>
+Generate a commit summary using conventional commit format from
+the output of a git diff that starts after the word <<DIFF START>>
 
-    Only respond with the generated commit text.
+--------
 
-    --------
+Only respond with the generated commit text.
 
-    Example commit message:
+--------
 
-    feat: add new feature
+Example commit message:
 
-    - Add new feature
-    - Update documentation
-    - Fix bug in existing feature
-    ...
+feat: add new feature
 
-    --------
+- Add new feature
+- Update documentation
+- Fix bug in existing feature
+...
 
-    <<INSTRUCTION END>>
+--------
 
-    <<DIFF START>>
+<<INSTRUCTION END>>
 
-  ]],
-}
+<<DIFF START>>
+]]
 
--- Utility function to get the staged git diff
+-- get the staged diff, no pager, strip CRLFs, only error on code > 1
 local function get_staged_diff()
-  local diff = vim.fn.system("git diff --cached")
-  if vim.v.shell_error ~= 0 then
-    vim.notify("Failed to get git diff", vim.log.levels.ERROR)
+  local cmd   = { "git", "--no-pager", "diff", "--cached" }
+  local lines = vim.fn.systemlist(cmd)
+  local code  = vim.v.shell_error
+
+  if code > 1 then
+    vim.notify(("git diff failed (exit code %d)"):format(code),
+               vim.log.levels.ERROR)
     return nil
   end
-  return diff
+
+  -- if no changes staged, lines == {} → return nil
+  if #lines == 0 then
+    vim.notify("No staged changes to diff", vim.log.levels.WARN)
+    return nil
+  end
+
+  return table.concat(lines, "\n")
 end
 
--- Utility function to insert output at the cursor position
-local function insert_at_cursor(output)
-  local win = vim.api.nvim_get_current_win()
+-- insert a list of lines at cursor
+local function insert_at_cursor(lines)
+  local win    = vim.api.nvim_get_current_win()
   local cursor = vim.api.nvim_win_get_cursor(win)
-  vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1] - 1, false, output)
-  vim.api.nvim_win_set_cursor(win, { cursor[1] + #output, cursor[2] })
+  vim.api.nvim_buf_set_lines(0,
+    cursor[1] - 1,
+    cursor[1] - 1,
+    false,
+    lines
+  )
+  vim.api.nvim_win_set_cursor(win, {
+    cursor[1] + #lines,
+    cursor[2],
+  })
 end
 
--- Function to generate commit summary using Ollama
-local function generate_with_ollama(prompt, diff)
-  -- Prepare input with prompt and diff
-  local input_with_diff = prompt .. "\n" .. diff
-  local json_payload = vim.json.encode({
-    model = "qwen2.5-coder:latest",
-    prompt = input_with_diff,
+-- helper to call curl and handle errors
+local function curl_json(args)
+  local out = vim.fn.systemlist(args)
+  if vim.v.shell_error ~= 0 then
+    vim.notify("curl failed: " .. table.concat(args, " "),
+               vim.log.levels.ERROR)
+    return nil
+  end
+  return table.concat(out, "\n")
+end
+
+-- Ollama via local REST API
+M.summarize_commit_ollama = function()
+  local diff = get_staged_diff(); if not diff then return end
+
+  local payload = vim.json.encode({
+    model  = "qwen2.5-coder:latest",
+    prompt = M.prompt .. diff,
     stream = false,
   })
 
-  -- Construct and execute command
-  local command =
-      string.format("curl -s -X POST http://localhost:11434/api/generate -d %s", vim.fn.shellescape(json_payload))
-  local output = vim.fn.systemlist(command)
+  local args = {
+    "curl", "-sS", "--fail",
+    "-X", "POST",
+    "-H", "Content-Type: application/json",
+    "http://localhost:11434/api/generate",
+    "-d", payload,
+  }
+  local body = curl_json(args)
+  if not body then return end
 
-  if vim.v.shell_error ~= 0 then
-    vim.notify("Failed to generate summary", vim.log.levels.ERROR)
-    print(vim.inspect(output))
-    return nil
+  local ok, resp = pcall(vim.json.decode, body)
+  if not ok then
+    vim.notify("Failed to decode Ollama JSON", vim.log.levels.ERROR)
+    print(body)
+    return
   end
 
-  -- Parse the JSON response
-  local response = vim.fn.json_decode(table.concat(output, "\n"))
-  if response and response.response then
-    return vim.split(response.response, "\n")
-  else
-    vim.notify("Invalid response format", vim.log.levels.ERROR)
-    return nil
+  if type(resp.response) ~= "string" then
+    vim.notify("Unexpected Ollama response format", vim.log.levels.ERROR)
+    print(body)
+    return
   end
+
+  local lines = vim.split(resp.response, "\n", { trimempty = true })
+  insert_at_cursor(lines)
 end
 
--- Function to generate commit summary using OpenAI Chat Completions
-local function generate_with_openai(prompt, diff)
-  -- Build the payload as a Lua table
-  local payload = {
-    model      = "gpt-4o-mini",
-    messages   = {
+-- OpenAI Chat Completions
+M.summarize_commit_openai = function()
+  local diff = get_staged_diff(); if not diff then return end
+
+  local api_key = os.getenv("OPENAI_API_KEY")
+  if not (api_key and #api_key > 0) then
+    vim.notify("OPENAI_API_KEY not set", vim.log.levels.ERROR)
+    return
+  end
+
+  local payload = vim.json.encode({
+    model    = "gpt-4o-mini",
+    messages = {
       {
         role    = "system",
         content = [[
-          You are a conventional commits summarizer.
-          You take in git diff data and only respond with a concise
-          but not lacking distinguishing details commit message and
-          bullet-listed commit body in the format of conventional commits.
-          Do not add any other text or formatting.
-        ]]
-        ,
+You are a conventional commits summarizer.
+You take git diff data and ONLY respond with a concise,
+bullet‑listed commit message in conventional‑commit format.
+Do not add any extra text or formatting.
+        ]],
       },
       {
         role    = "user",
@@ -103,75 +144,36 @@ local function generate_with_openai(prompt, diff)
     },
     max_tokens = 1024,
     stream     = false,
+  })
+
+  local args = {
+    "curl", "-sS", "--fail",
+    "-X", "POST",
+    "https://api.openai.com/v1/chat/completions",
+    "-H", "Authorization: Bearer " .. api_key,
+    "-H", "Content-Type: application/json",
+    "-d", payload,
   }
 
-  -- Encode to JSON and write to a temp file
-  local tmpfile = os.tmpname()
-  local f = io.open(tmpfile, "w")
-  if not f then
-    vim.notify("Failed to write temp payload file", vim.log.levels.ERROR)
-    return nil
-  end
-  f:write(vim.json.encode(payload))
-  f:close()
+  local body = curl_json(args)
+  if not body then return end
 
-  -- Send the request
-  local cmd = string.format(
-    'curl -s -X POST "https://api.openai.com/v1/chat/completions" ' ..
-    '-H "Authorization: Bearer %s" ' ..
-    '-H "Content-Type: application/json" ' ..
-    '-d @%s',
-    vim.fn.shellescape(os.getenv("OPENAI_API_KEY") or ""),
-    vim.fn.shellescape(tmpfile)
-  )
-  local output = vim.fn.systemlist(cmd)
-  os.remove(tmpfile)
-
-  if vim.v.shell_error ~= 0 then
-    vim.notify("OpenAI request failed", vim.log.levels.ERROR)
-    print(table.concat(output, "\n"))
-    return nil
-  end
-
-  -- Parse the response
-  local ok, response = pcall(vim.json.decode, table.concat(output, "\n"))
-  if not ok or
-      not response.choices or
-      not response.choices[1].message
+  local ok, resp = pcall(vim.json.decode, body)
+  if not ok
+     or not resp.choices
+     or not resp.choices[1].message
+     or not resp.choices[1].message.content
   then
-    vim.notify("Unexpected OpenAI response format", vim.log.levels.ERROR)
-    return nil
-  end
-
-  -- Return the generated commit text lines
-  local content = response.choices[1].message.content or ""
-  return vim.split(content, "\n", { trimempty = true })
-end
-
--- Summarize commit using Ollama
-M.summarize_commit_ollama = function()
-  local diff = get_staged_diff()
-  if not diff then
+    vim.notify("Unexpected OpenAI response", vim.log.levels.ERROR)
     return
   end
 
-  local output = generate_with_ollama(M.prompt, diff)
-  if output then
-    insert_at_cursor(output)
-  end
-end
-
--- Summarize commit using OpenAI
-M.summarize_commit_openai = function()
-  local diff = get_staged_diff()
-  if not diff then
-    return
-  end
-
-  local output = generate_with_openai(M.prompt, diff)
-  if output then
-    insert_at_cursor(output)
-  end
+  local lines = vim.split(
+    resp.choices[1].message.content,
+    "\n",
+    { trimempty = true }
+  )
+  insert_at_cursor(lines)
 end
 
 return M
