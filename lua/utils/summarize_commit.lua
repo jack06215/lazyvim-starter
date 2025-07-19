@@ -95,17 +95,23 @@ M.summarize_commit_ollama = function()
     "http://localhost:11434/api/generate",
     "-d", payload,
   }
-
   local body = curl_json(args)
   if not body then return end
 
   local ok, resp = pcall(vim.json.decode, body)
-  if not ok or not resp.choices or not resp.choices[1].text then
-    vim.notify("Invalid Ollama response", vim.log.levels.ERROR)
+  if not ok then
+    vim.notify("Failed to decode Ollama JSON", vim.log.levels.ERROR)
+    print(body)
     return
   end
 
-  local lines = vim.split(resp.choices[1].text, "\n", { trimempty = true })
+  if type(resp.response) ~= "string" then
+    vim.notify("Unexpected Ollama response format", vim.log.levels.ERROR)
+    print(body)
+    return
+  end
+
+  local lines = vim.split(resp.response, "\n", { trimempty = true })
   insert_at_cursor(lines)
 end
 
