@@ -7,6 +7,8 @@ return {
       jsonnet = { "jsonnetfmt" },
       json = { "jq" },
       shell = { "shfmt" },
+      bazel = { "buildifier" },
+      bzl = { "buildifier" },
     },
   },
   keys = {
