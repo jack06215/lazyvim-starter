@@ -4,11 +4,10 @@ return {
     spec = {
 
       -- Buffer
-      { "<leader>b",   group = "Buffer" },
+      { "<leader>b", group = "Buffer" },
 
       -- Python
-      { "<leader>pyc", group = "Copy" },
-      { "<leader>py",  group = "Python" },
+      { "<leader>py", group = "Python" },
     },
   },
 }

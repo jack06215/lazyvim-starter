@@ -49,7 +49,7 @@ vim.keymap.set("n", "<leader>fp", function()
   end
 end, { desc = "Copy Relative Path to Clipboard" })
 
-vim.keymap.set("n", "<leader>pycm", function()
+vim.keymap.set("n", "<leader>pym", function()
   local path = vim.api.nvim_buf_get_name(0)
   if path == "" then
     vim.notify("No file associated with current buffer", vim.log.levels.ERROR)
@@ -59,7 +59,7 @@ vim.keymap.set("n", "<leader>pycm", function()
     vim.fn.setreg("+", dot_path) -- copy to system clipboard
     vim.notify("Copied to clipboard: " .. dot_path, vim.log.levels.INFO)
   end
-end, { desc = "Copy Python Module Name" })
+end, { desc = "Copy Module Name" })
 
 -- Delete buffers to the right of current buffer
 vim.keymap.set("n", "<leader>br", function()
