@@ -39,18 +39,6 @@ M.config = function()
     natdat = "[NDat]",
   }
 
-  ---Check whether `check` and call action or fallback
-  ---@param do_action boolean: true -> action(), false -> fallback()
-  ---@param action function
-  ---@param fallback function
-  ---@return any: result of calling action or fallback
-  local function action_or_fallback(do_action, action, fallback)
-    if do_action then
-      return action()
-    else
-      return fallback()
-    end
-  end
 
   ---@type table<integer, integer>
   local modified_priority = {
@@ -96,36 +84,7 @@ M.config = function()
         luasnip.lsp_expand(args.body)
       end,
     },
-    mapping = {
-      ["<C-p>"] = cmp.mapping.select_prev_item(),
-      ["<C-n>"] = cmp.mapping.select_next_item(),
-      ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-      ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-      -- ["<C-Space>"] = cmp.mapping(cmp.mapping.complete({}), { "i", "c" }),
-      ["<C-e>"] = cmp.mapping(function(fallback)
-        action_or_fallback(luasnip.choice_active(), function()
-          luasnip.change_choice(-1)
-        end, fallback)
-      end, { "i", "s" }),
-      ["<C-d>"] = cmp.mapping(function(fallback)
-        action_or_fallback(luasnip.choice_active(), function()
-          luasnip.change_choice(1)
-        end, fallback)
-      end, { "i", "s" }),
-      ["<CR>"] = cmp.mapping.confirm({ select = false }),
-      ["<C-l>"] = cmp.mapping(function(fallback)
-        action_or_fallback(luasnip.in_snippet() and luasnip.jumpable(1), function()
-          luasnip.jump(1)
-        end, fallback)
-      end, { "i", "s" }),
-      ["<C-a>"] = cmp.mapping(function(fallback)
-        action_or_fallback(luasnip.jumpable(-1), function()
-          luasnip.jump(-1)
-        end, fallback)
-      end, { "i", "s" }),
-      ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-      ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-    },
+    mapping = require("plugins.cmp.keymaps"),
     sources = cmp.config.sources({
       { name = "nvim_lsp", keyword_length = 3 },
       { name = "luasnip" },
