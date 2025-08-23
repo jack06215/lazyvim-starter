@@ -8,6 +8,9 @@ return {
 
       -- Python
       { "<leader>py", group = "Python" },
+
+      -- packages.json
+      { "<leader>pj", group = "packages.json" },
     },
   },
 }
