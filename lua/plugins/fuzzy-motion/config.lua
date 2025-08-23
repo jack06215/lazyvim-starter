@@ -1,9 +1,7 @@
 return {
   "yuki-yano/fuzzy-motion.vim",
   cmd = { "FuzzyMotion" },
-  keys = {
-    { "<CR>", "<CMD>FuzzyMotion<CR>", mode = { "n", "v", "x" } },
-  },
+  -- keys moved to keymaps.lua
   dependencies = {
     "vim-denops/denops.vim",
     "lambdalisue/vim-kensaku",
