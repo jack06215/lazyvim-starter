@@ -7,10 +7,7 @@ return {
       require("telescope").load_extension("todo-comments")
     end,
     cmd = { "TodoTrouble", "TodoTelescope", "TodoQuickFix" },
-    keys = {
-      { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo (Telescope)" },
-    },
+    -- Keymaps have been moved to a separate file
+    keys = require("plugins.todo-comments.keymaps"),
   },
 }
