@@ -1,7 +1,5 @@
--- ~/.config/nvim/lua/plugins/ui.lua
-
 -- Utility for detecting & caching Python env (Poetry, .venv, system)
-local python_env = require("utils.python_env")
+-- local python_env = require("utils.python_env")
 
 return {
   {
