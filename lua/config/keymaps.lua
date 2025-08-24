@@ -11,4 +11,5 @@ require("config.keymaps.python").create_keymaps()
 -- Plugins
 require("config.keymaps.lazyvim").create_keymaps()
 require("config.keymaps.neogit").create_keymaps()
+-- require("config.keymaps.codecompanion").create_keymaps()
 require("config.keymaps.package-info").create_keymaps()

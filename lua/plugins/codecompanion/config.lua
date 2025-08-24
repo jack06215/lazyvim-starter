@@ -1,7 +1,6 @@
 return {
   "olimorris/codecompanion.nvim",
   cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
-  -- keys = require("plugins.codecompanion.keymaps"),
   dependencies = {
     "j-hui/fidget.nvim",
     "ravitemer/codecompanion-history.nvim",
