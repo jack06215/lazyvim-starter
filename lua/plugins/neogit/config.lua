@@ -1,4 +1,3 @@
--- lua/plugins/neogit.lua
 return {
   "NeogitOrg/neogit",
   lazy = false,
@@ -16,11 +15,11 @@ return {
     "nvim-telescope/telescope.nvim",
   },
   config = function()
-    require("neogit").setup {
+    require("neogit").setup({
       integrations = {
         diffview = true,
         telescope = true,
       },
-    }
+    })
   end,
 }
