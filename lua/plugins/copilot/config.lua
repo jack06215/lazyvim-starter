@@ -16,5 +16,5 @@ return {
     dependencies = {
       "zbirenbaum/copilot.lua",
     },
-  }
+  },
 }
