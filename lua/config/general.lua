@@ -185,6 +185,20 @@ vim.filetype.add({
   },
 })
 
+vim.filetype.add({
+  pattern = {
+    -- match any file ending in `.lua.tmpl`
+    [".*%.lua%.tmpl"] = "lua",
+    [".*%.json%.tmpl"] = "json",
+    [".*%.toml%.tmpl"] = "toml",
+    [".*%.yaml%.tmpl"] = "yaml",
+    [".*%.yml%.tmpl"] = "yaml",
+    [".*%.sh%.tmpl"] = "sh",
+    [".*%.ps1%.tmpl"] = "ps1",
+    [".*%.zsh%.tmpl"] = "zsh",
+  },
+})
+
 if vim.env.PYENV_ROOT then
   vim.g.python3_host_prog = vim.env.PYENV_ROOT .. "/versions/global/bin/python"
 end
