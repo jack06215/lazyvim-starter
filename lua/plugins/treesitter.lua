@@ -69,6 +69,11 @@ return {
         node_incremental = "]]",
         node_decremental = "[[",
       },
+      matchup = {
+        enable = true,
+        disable_virtual_text = false,
+        include_match_words = true,
+      },
     },
   },
 }

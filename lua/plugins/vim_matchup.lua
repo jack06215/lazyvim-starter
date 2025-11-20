@@ -15,13 +15,4 @@ return {
     vim.g.matchup_matchparen_timeout = 300
     vim.g.matchup_matchparen_insert_timeout = 60
   end,
-
-  opts = {
-    -- Treesitter 経由の設定は opts で書く（Lazy の正しい流儀）
-    matchup = {
-      enable = true,
-      disable_virtual_text = false,
-      include_match_words = true,
-    },
-  },
 }
