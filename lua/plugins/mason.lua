@@ -1,5 +1,5 @@
 local M = {
-  "williamboman/mason.nvim",
+  "mason-org/mason.nvim",
   event = "VeryLazy",
   dependencies = {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
