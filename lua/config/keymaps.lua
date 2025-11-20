@@ -7,6 +7,7 @@ require("config.keymaps.bufferline").create_keymaps()
 
 -- Language specific
 require("config.keymaps.python").create_keymaps()
+require("config.keymaps.typescript").create_keymaps()
 
 -- Plugins
 require("config.keymaps.lazyvim").create_keymaps()
