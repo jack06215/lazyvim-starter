@@ -4,5 +4,5 @@ return {
     keys = {
       { "ys", mode = { "n", "x" }, desc = "Surround text" },
     },
-  }
+  },
 }
