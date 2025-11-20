@@ -18,7 +18,7 @@ return {
     providers = {
       ollama = {
         endpoint = "http://127.0.0.1:11434", -- Specify endpoint without trailing /v1
-        model = "qwen2.5-coder:latest",    -- Model version
+        model = "qwen2.5-coder:latest", -- Model version
       },
     },
     -- Additional options can be added here for future extensibility
@@ -27,20 +27,20 @@ return {
     -- Mandatory dependencies
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    
+
     -- Optional dependencies
     --- For file_selector providers
-    "echasnovski/mini.pick",         -- Supports mini.pick
+    "nvim-mini/mini.pick",
     "nvim-telescope/telescope.nvim", -- Supports telescope
-    "ibhagwan/fzf-lua",              -- Supports fzf
+    "ibhagwan/fzf-lua", -- Supports fzf
 
     --- For input providers
-    "stevearc/dressing.nvim",        -- Supports dressing
-    "folke/snacks.nvim",             -- Supports snacks
+    "stevearc/dressing.nvim", -- Supports dressing
+    "folke/snacks.nvim", -- Supports snacks
 
     --- Others
-    "nvim-tree/nvim-web-devicons",   -- Icons support
-    "zbirenbaum/copilot.lua",        -- Required for providers='copilot'
+    "nvim-tree/nvim-web-devicons", -- Icons support
+    "zbirenbaum/copilot.lua", -- Required for providers='copilot'
 
     {
       -- Support for image pasting
@@ -59,7 +59,7 @@ return {
     },
     {
       -- Markdown rendering support
-      'MeanderingProgrammer/render-markdown.nvim',
+      "MeanderingProgrammer/render-markdown.nvim",
       opts = {
         file_types = { "markdown", "Avante" },
       },

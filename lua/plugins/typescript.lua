@@ -1,28 +1,34 @@
 return {
+
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      init = function()
-        require("lazyvim.util").lsp.on_attach(function(_, buffer)
-          vim.keymap.set("n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-          vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { buffer = buffer, desc = "Rename File" })
-        end)
-      end,
-    },
+    "pmizio/typescript-tools.nvim",
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     opts = {
-      servers = {
-        tsserver = {},
-      },
-      setup = {
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
+      settings = {
+        separate_diagnostic_server = true,
       },
     },
   },
 
-  -- Optional: LazyVim already includes a TS spec. You can keep this if you prefer using their defaults.
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        tsserver = {
+          keys = {
+            {
+              "<leader>co",
+              "<cmd>TSToolsOrganizeImports<CR>",
+              desc = "Organize Imports",
+              has = "workspace.executeCommand",
+            },
+            { "<leader>cR", "<cmd>TSToolsRenameFile<CR>", desc = "Rename File", has = "workspace.executeCommand" },
+          },
+        },
+      },
+    },
+  },
+
+  -- Optionally import LazyVim TS settings
   { import = "lazyvim.plugins.extras.lang.typescript" },
 }

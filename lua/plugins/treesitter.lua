@@ -1,79 +1,74 @@
-local ts_packages = {
-  "bash",
-  "bibtex",
-  "cmake",
-  "cpp",
-  "cuda",
-  "glsl",
-  "html",
-  "javascript",
-  "json",
-  "json5",
-  "jsonc",
-  "lua",
-  "make",
-  "markdown",
-  "markdown_inline",
-  "nim",
-  "nim_format_string",
-  "proto",
-  "python",
-  "rust",
-  "regex",
-  "toml",
-  "tsx",
-  "typescript",
-  "vim",
-  "vimdoc",
-  "vue",
-  "yaml",
-}
+return {
+  {
+    "nvim-treesitter/nvim-treesitter",
+    version = false,
+    build = ":TSUpdate",
+    event = { "BufReadPre", "BufNewFile" },
 
-local M = {
-  "nvim-treesitter/nvim-treesitter",
-  dependencies = { "sustech-data/wildfire.nvim" },
-  version = false,
-  build = ":TSUpdateSync",
-  event = "BufReadPre",
-  cmd = { "TSUpdate", "TSUpdateSync" },
-}
+    opts = function(_, opts)
+      -- あなたのリストを LazyVim のデフォルトとマージ
+      local extra_packages = {
+        "bash",
+        "bibtex",
+        "cmake",
+        "cpp",
+        "cuda",
+        "glsl",
+        "html",
+        "javascript",
+        "json",
+        "json5",
+        "jsonc",
+        "lua",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "nim",
+        "nim_format_string",
+        "proto",
+        "python",
+        "rust",
+        "regex",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "vue",
+        "yaml",
+      }
 
-M.config = function()
-  require("nvim-treesitter.configs").setup({
-    modules = {},
-    auto_install = true,
-    ensure_installed = ts_packages,
-    sync_install = false,
-    ignore_install = {},
-    autopairs = { enable = true },
-    highlight = {
-      enable = true,
-      disable = {
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, extra_packages)
+
+      opts.highlight = opts.highlight or {}
+      opts.highlight.disable = {
         "latex",
         "tex",
         "markdown",
         "sh",
         "bash",
         "zsh",
-      },
-      additional_vim_regex_highlighting = false,
-    },
-    indent = {
-      enable = true,
-      disable = {
-        "python",
-        "yaml",
-      },
-    },
-    incremental_selection = { enable = false }, -- wildfire does a better job
-  })
-  require("wildfire").setup({
-    keymaps = {
-      init_selection = "gn",
-      node_incremental = "]]",
-      node_decremental = "[[",
-    },
-  })
-end
+      }
 
-return M
+      opts.indent = opts.indent or {}
+      opts.indent.disable = { "python", "yaml" }
+
+      return opts
+    end,
+  },
+
+  -- wildfire (Treesitter selection 拡張)
+  {
+    "sustech-data/wildfire.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      keymaps = {
+        init_selection = "gn",
+        node_incremental = "]]",
+        node_decremental = "[[",
+      },
+    },
+  },
+}

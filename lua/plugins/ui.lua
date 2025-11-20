@@ -1,4 +1,4 @@
--- enabled if noice.nvim is off
+-- custom hover override
 vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
   config = config or {}
   config.focus_id = ctx.method
@@ -20,19 +20,11 @@ return {
       inlay_hints = { enabled = false },
     },
   },
+
+  -- actions-preview (fixed)
   {
     "aznhe21/actions-preview.nvim",
     event = "LspAttach",
-    dependencies = {
-      {
-        "neovim/nvim-lspconfig",
-        opts = function()
-          local keys = require("lazyvim.plugins.lsp.keymaps").get()
-
-          keys[#keys + 1] = { "<leader>ca", false }
-        end,
-      },
-    },
     opts = {
       backend = { "nui" },
       diff = {
@@ -51,6 +43,7 @@ return {
       },
     },
   },
+
   {
     "0oAstro/dim.lua",
     event = "LspAttach",
@@ -59,3 +52,4 @@ return {
     },
   },
 }
+
