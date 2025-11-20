@@ -6,7 +6,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
 
     opts = function(_, opts)
-      -- あなたのリストを LazyVim のデフォルトとマージ
       local extra_packages = {
         "bash",
         "bibtex",
