@@ -18,6 +18,7 @@ return {
         "json",
         "json5",
         "jsonc",
+        "jsonnet",
         "lua",
         "make",
         "markdown",

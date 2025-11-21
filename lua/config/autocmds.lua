@@ -6,6 +6,8 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+-- Chezmoi .tmpl handling
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = "*.tmpl",
   callback = function(ev)
@@ -14,5 +16,13 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
       vim.bo.filetype = ext
       vim.b.is_chezmoi_tmpl = true
     end
+  end,
+})
+
+-- libsonnet → jsonnet
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.libsonnet" },
+  callback = function()
+    vim.bo.filetype = "jsonnet"
   end,
 })
