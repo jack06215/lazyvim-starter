@@ -34,13 +34,13 @@ Clone the starter.
 - Windows
 
 ```ps1
-git clone git@github.com:jack06215/lazyvim-starter.git $env:LOCALAPPDATA\nvim
+git clone https://github.com/jack06215/lazyvim-starter.git $env:LOCALAPPDATA\nvim
 ```
 
 - MacOS
 
 ```sh
-git clone git@github.com:jack06215/lazyvim-starter.git ~/.config/nvim
+git clone https://github.com/jack06215/lazyvim-starter.git ~/.config/nvim
 ```
 
 Start Neovim
