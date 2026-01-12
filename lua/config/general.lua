@@ -135,9 +135,12 @@ vim.g.personal_lookup = {
   },
 }
 
-if vim.fn.has("win32") == 1 then
+local is_wsl = (vim.fn.has("wsl") == 1)
+local is_win = (vim.fn.has("win32") == 1) or (vim.fn.has("win64") == 1)
+
+if is_wsl or is_win then
   vim.g.clipboard = {
-    name = "win32yank-windows",
+    name = is_wsl and "win32yank-wsl" or "win32yank-windows",
     copy = {
       ["+"] = "win32yank.exe -i --crlf",
       ["*"] = "win32yank.exe -i --crlf",
