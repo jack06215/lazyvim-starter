@@ -135,6 +135,20 @@ vim.g.personal_lookup = {
   },
 }
 
+if vim.fn.has("win32") == 1 then
+  vim.g.clipboard = {
+    name = "win32yank-windows",
+    copy = {
+      ["+"] = "win32yank.exe -i --crlf",
+      ["*"] = "win32yank.exe -i --crlf",
+    },
+    paste = {
+      ["+"] = "win32yank.exe -o --lf",
+      ["*"] = "win32yank.exe -o --lf",
+    },
+  }
+end
+
 -- neovim specific options
 vim.opt.completeopt = "menuone,noselect"
 vim.opt.cmdheight = 0
