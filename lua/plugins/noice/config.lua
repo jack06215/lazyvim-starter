@@ -1,6 +1,9 @@
 return {
   "folke/noice.nvim",
-  cond = not vim.g.started_by_firenvim,
+  -- Do not load noice in VSCode Neovim
+  cond = function()
+    return not vim.g.vscode
+  end,
   dependencies = {
     "MunifTanjim/nui.nvim",
     "rcarriga/nvim-notify",
