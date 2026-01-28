@@ -2,6 +2,7 @@ return {
   "stevearc/conform.nvim",
   event = { "BufReadPre", "BufNewFile" },
   opts = {
+    -- :help conform-formatters for more details
     formatters_by_ft = {
       python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
       jsonnet = { "jsonnetfmt" },
