@@ -1,16 +1,27 @@
 local M = {}
 
 -- List of all LSP servers to register
+--
 M.lsp_list = {
-  "pyright",
-  "lua_ls",
-  "jsonls",
   "bashls",
+  "denols",
+  "dockerls",
   "gopls",
+  "helm_ls",
+  "jsonls",
   -- Foloow https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#jsonnet_ls to use jsonnet_ls
   "jsonnet_ls",
-  -- Add more as needed
+  "lua_ls",
+  "marksman",
   "powershell_es",
+  "pyright",
+  "regols",
+  "rubocop",
+  "ruby_lsp",
+  "sqlls",
+  "terraformls",
+  "tsserver",
+  "yamlls",
 }
 
 -- Enhanced capabilities (e.g., for nvim-cmp)
