@@ -11,6 +11,7 @@ return {
       json = { "jq" },
       jsonc = { "jq" },
       jsonnet = { "jsonnetfmt" },
+      proto = { "buf" },
       python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
       sh = { "shfmt" },
     },
@@ -26,6 +27,13 @@ return {
           "-ci",
           "-sr",
           "-bn",
+        },
+        stdin = true,
+      },
+      proto = {
+        command = "buf",
+        args = {
+          "format",
         },
         stdin = true,
       },

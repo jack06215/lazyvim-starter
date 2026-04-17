@@ -11,6 +11,8 @@ return {
       -- package.json
       { "<leader>pj", group = "package.json" },
 
+      { "<leader>o", group = "Octo" },
+
       { "<leader>g", group = "git" },
     },
   },
