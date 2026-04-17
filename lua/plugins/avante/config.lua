@@ -15,12 +15,12 @@ return {
   ---@type avante.Config
   opts = {
     provider = "copilot", -- Default provider
-    providers = {
-      ollama = {
-        endpoint = "http://127.0.0.1:11434", -- Specify endpoint without trailing /v1
-        model = "qwen2.5-coder:latest", -- Model version
-      },
-    },
+    -- providers = {
+    --   ollama = {
+    --     endpoint = "http://127.0.0.1:11434", -- Specify endpoint without trailing /v1
+    --     model = "qwen2.5-coder:latest", -- Model version
+    --   },
+    -- },
     auto_suggestions_provider = nil,
     behaviour = {
       allow_access_to_git_ignored_files = true,
