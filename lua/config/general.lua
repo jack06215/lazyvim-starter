@@ -152,7 +152,7 @@ if is_wsl or is_win then
   }
 end
 
--- neovim specific optionsasdjfklasdjfk
+-- neovim specific options
 vim.opt.completeopt = "menuone,noselect"
 vim.opt.cmdheight = 0
 vim.opt.exrc = true
