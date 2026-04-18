@@ -21,6 +21,9 @@ return {
         telescope = true,
       },
       process_spinner = false,
+      disable_line_numbers = false,
+      disable_relative_line_numbers = false,
+      kind = "split", -- avoid floating process window issues
     })
   end,
 }
