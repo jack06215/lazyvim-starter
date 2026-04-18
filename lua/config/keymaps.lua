@@ -7,6 +7,12 @@ vim.keymap.set("n", "<leader>w>", function()
   vim.api.nvim_win_set_width(win, width + 20)
 end, { desc = "Increase window width" })
 
+vim.keymap.set("n", "<leader>w<", function()
+  local win = vim.api.nvim_get_current_win()
+  local width = vim.api.nvim_win_get_width(win)
+  vim.api.nvim_win_set_width(win, width - 10)
+end, { desc = "Increase window width" })
+
 vim.keymap.set("n", "<leader>w+", function()
   local win = vim.api.nvim_get_current_win()
   local height = vim.api.nvim_win_get_height(win)
