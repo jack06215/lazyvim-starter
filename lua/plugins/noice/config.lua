@@ -1,6 +1,5 @@
 return {
   "folke/noice.nvim",
-  -- Do not load noice in VSCode Neovim
   cond = function()
     return not vim.g.vscode
   end,
@@ -9,6 +8,18 @@ return {
     "rcarriga/nvim-notify",
   },
   config = function()
-    require("noice").setup({})
+    require("noice").setup({
+      routes = {
+        -- Hide pyright progress spam
+        {
+          filter = {
+            event = "lsp",
+            kind = "progress",
+            find = "pyright",
+          },
+          opts = { skip = true },
+        },
+      },
+    })
   end,
 }
