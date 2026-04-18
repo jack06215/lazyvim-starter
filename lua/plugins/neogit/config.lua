@@ -20,6 +20,7 @@ return {
         diffview = true,
         telescope = true,
       },
+      process_spinner = false,
     })
   end,
 }
