@@ -8,6 +8,7 @@ return {
       bash = { "shfmt" },
       bazel = { "buildifier" },
       bzl = { "buildifier" },
+      cpp = { "clang-format" },
       json = { "jq" },
       jsonc = { "jq" },
       jsonnet = { "jsonnetfmt" },

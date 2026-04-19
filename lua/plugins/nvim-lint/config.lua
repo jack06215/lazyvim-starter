@@ -26,6 +26,7 @@ return {
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "mypy", "ruff" }, -- Or "ruff" or "flake8" (pick one)
+      cpp = { "cpplint" },
       proto = { "buf" },
       sql = { "sqlfluff" },
       markdown = { "markdownlint" },

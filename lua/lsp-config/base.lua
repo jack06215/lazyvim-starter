@@ -1,15 +1,15 @@
 local M = {}
 
 -- List of all LSP servers to register
---
+-- Foloow https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#jsonnet_ls to use jsonnet_ls
 M.lsp_list = {
   "bashls",
+  "clangd",
   "denols",
   "dockerls",
   "gopls",
   "helm_ls",
   "jsonls",
-  -- Foloow https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#jsonnet_ls to use jsonnet_ls
   "jsonnet_ls",
   "lua_ls",
   "marksman",
