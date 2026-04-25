@@ -5,42 +5,84 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
+
     opts = function(_, opts)
-      -- 📁 Current Directory
+      ------------------------------------------------------------
+      -- 📁 Current directory
+      ------------------------------------------------------------
       local function current_directory()
-        return "📁 " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-      end
+        local cwd = vim.fn.getcwd()
+        local name = vim.fn.fnamemodify(cwd, ":t")
 
-      -- 🔧 Active LSP
-      local function active_lsp()
-        local buf_ft = vim.bo.filetype
-        local clients = vim.lsp.get_clients()
-        for _, client in ipairs(clients) do
-          if client.config and client.config.filetypes and vim.tbl_contains(client.config.filetypes, buf_ft) then
-            return "🔧 " .. client.name
-          end
+        if cwd == vim.loop.os_homedir() then
+          name = "~"
         end
-        return "🔧 No LSP"
+
+        return "󰉋 " .. name
       end
 
-      -- -- 🐍 Python venv / Poetry env
-      -- local function python_venv()
-      --   local name = python_env.get_name()
-      --   return (name ~= "" and ("🐍 " .. name)) or ""
-      -- end
+      ------------------------------------------------------------
+      -- 🔧 Active LSP
+      ------------------------------------------------------------
+      local function active_lsp()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local clients = vim.lsp.get_clients({ bufnr = bufnr })
 
-      -- --  Git branch via gitsigns
-      -- local function git_branch()
-      --   local branch = vim.b.gitsigns_head
-      --   return (branch and (" " .. branch)) or ""
-      -- end
+        if #clients == 0 then
+          return "󰒋 none"
+        end
 
-      -- Extend the 'x' section of the statusline
-      vim.list_extend(opts.sections.lualine_x, {
-        current_directory,
+        local names = {}
+
+        for _, client in ipairs(clients) do
+          table.insert(names, client.name)
+        end
+
+        return "󰒋 " .. table.concat(names, ",")
+      end
+
+      ------------------------------------------------------------
+      --  Git branch
+      ------------------------------------------------------------
+      local function git_branch()
+        local head = vim.b.gitsigns_head
+        return head and head ~= "" and (" " .. head) or ""
+      end
+
+      ------------------------------------------------------------
+      -- 🐍 Python env
+      ------------------------------------------------------------
+      local function python_env()
+        if vim.bo.filetype ~= "python" then
+          return ""
+        end
+
+        local env = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_DEFAULT_ENV")
+
+        if not env then
+          return ""
+        end
+
+        return "󰌠 " .. vim.fn.fnamemodify(env, ":t")
+      end
+
+      ------------------------------------------------------------
+      -- Section
+      ------------------------------------------------------------
+      opts.sections.lualine_x = {
+        git_branch,
+        python_env,
         active_lsp,
-        -- python_venv,
-        -- git_branch,
+        current_directory,
+      }
+
+      ------------------------------------------------------------
+      -- UI
+      ------------------------------------------------------------
+      opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
+        globalstatus = true,
+        component_separators = { left = "│", right = "│" },
+        section_separators = { left = "", right = "" },
       })
     end,
   },
