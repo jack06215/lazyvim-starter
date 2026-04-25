@@ -10,12 +10,14 @@ return {
   config = function()
     require("noice").setup({
       routes = {
-        -- Hide pyright progress spam
         {
           filter = {
             event = "lsp",
             kind = "progress",
-            find = "pyright",
+            cond = function(message)
+              local client = vim.tbl_get(message.opts, "progress", "client")
+              return client == "pyright"
+            end,
           },
           opts = { skip = true },
         },
