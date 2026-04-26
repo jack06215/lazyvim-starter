@@ -12,13 +12,25 @@ return {
       ------------------------------------------------------------
       local function current_directory()
         local cwd = vim.fn.getcwd()
-        local name = vim.fn.fnamemodify(cwd, ":t")
 
+        -- current folder
+        local current = vim.fn.fnamemodify(cwd, ":t")
+
+        -- parent folder
+        local parent_path = vim.fn.fnamemodify(cwd, ":h")
+        local parent = vim.fn.fnamemodify(parent_path, ":t")
+
+        -- ~/ special case
         if cwd == vim.loop.os_homedir() then
-          name = "~"
+          return "󰉋 ~"
         end
 
-        return "󰉋 " .. name
+        -- if parent exists and is not root, show parent/current
+        if parent ~= "" and parent ~= "/" and parent ~= "." then
+          return "󰉋 " .. parent .. "/" .. current
+        end
+
+        return "󰉋 " .. current
       end
 
       ------------------------------------------------------------
