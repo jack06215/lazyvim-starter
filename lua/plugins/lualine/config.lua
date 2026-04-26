@@ -41,13 +41,13 @@ return {
         return "󰒋 " .. table.concat(names, ",")
       end
 
-      ------------------------------------------------------------
-      --  Git branch
-      ------------------------------------------------------------
-      local function git_branch()
-        local head = vim.b.gitsigns_head
-        return head and head ~= "" and (" " .. head) or ""
-      end
+      -- ------------------------------------------------------------
+      -- --  Git branch
+      -- ------------------------------------------------------------
+      -- local function git_branch()
+      --   local head = vim.b.gitsigns_head
+      --   return head and head ~= "" and (" " .. head) or ""
+      -- end
 
       ------------------------------------------------------------
       -- 🐍 Python env
@@ -70,7 +70,7 @@ return {
       -- Section
       ------------------------------------------------------------
       opts.sections.lualine_x = {
-        git_branch,
+        -- git_branch,
         python_env,
         active_lsp,
         current_directory,
