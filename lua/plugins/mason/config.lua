@@ -7,10 +7,7 @@ local M = {
 }
 
 M.tools = {
-  -- DAP
   "debugpy",
-
-  -- Linters
   "buf",
   "cmakelang",
   "cpplint",
@@ -23,10 +20,8 @@ M.tools = {
   "shellcheck",
   "jsonnet-language-server",
 
-  -- Formatters
   "autopep8",
   "black",
-  "cmakelang",
   -- "isort",
   "prettier",
   "ruff",

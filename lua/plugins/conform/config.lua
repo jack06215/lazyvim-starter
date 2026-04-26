@@ -4,14 +4,17 @@ return {
   opts = {
     -- :help conform-formatters for more details
     formatters_by_ft = {
-      python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
-      jsonnet = { "jsonnetfmt" },
-      json = { "jq" },
-      sh = { "shfmt" },
-      bash = { "shfmt" },
       -- zsh = { "shfmt" },
+      bash = { "shfmt" },
       bazel = { "buildifier" },
       bzl = { "buildifier" },
+      cpp = { "clang-format" },
+      json = { "jq" },
+      jsonc = { "jq" },
+      jsonnet = { "jsonnetfmt" },
+      proto = { "buf" },
+      python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
+      sh = { "shfmt" },
     },
     -- tell Conform how to run
     formatters = {
@@ -25,6 +28,13 @@ return {
           "-ci",
           "-sr",
           "-bn",
+        },
+        stdin = true,
+      },
+      proto = {
+        command = "buf",
+        args = {
+          "format",
         },
         stdin = true,
       },

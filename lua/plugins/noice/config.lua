@@ -1,6 +1,5 @@
 return {
   "folke/noice.nvim",
-  -- Do not load noice in VSCode Neovim
   cond = function()
     return not vim.g.vscode
   end,
@@ -9,6 +8,20 @@ return {
     "rcarriga/nvim-notify",
   },
   config = function()
-    require("noice").setup({})
+    require("noice").setup({
+      routes = {
+        {
+          filter = {
+            event = "lsp",
+            kind = "progress",
+            cond = function(message)
+              local client = vim.tbl_get(message.opts, "progress", "client")
+              return client == "pyright"
+            end,
+          },
+          opts = { skip = true },
+        },
+      },
+    })
   end,
 }

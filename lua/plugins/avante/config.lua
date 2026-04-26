@@ -15,12 +15,45 @@ return {
   ---@type avante.Config
   opts = {
     provider = "copilot", -- Default provider
-    providers = {
-      ollama = {
-        endpoint = "http://127.0.0.1:11434", -- Specify endpoint without trailing /v1
-        model = "qwen2.5-coder:latest", -- Model version
-      },
+    -- providers = {
+    --   ollama = {
+    --     endpoint = "http://127.0.0.1:11434", -- Specify endpoint without trailing /v1
+    --     model = "qwen2.5-coder:latest", -- Model version
+    --   },
+    -- },
+    auto_suggestions_provider = nil,
+    behaviour = {
+      allow_access_to_git_ignored_files = true,
     },
+    disabled_tools = {
+      -- "bash",
+      -- "create_dir",
+      -- "create_file",
+      -- "create",
+      -- "delete_dir",
+      -- "delete_file",
+      -- "edit_file",
+      -- "insert",
+      -- "list_files", -- Built-in file operations
+      -- "read_file",
+      -- "rename_dir",
+      -- "rename_file",
+      -- "replace_in_file",
+      -- "search_files",
+      -- "str_replace",
+      -- "undo_edit",
+      -- "view",
+      -- "write_to_file",
+    },
+    -- system_prompt = function()
+    --   local hub = require("mcphub").get_hub_instance()
+    --   return hub and hub:get_active_servers_prompt() or ""
+    -- end,
+    -- custom_tools = function()
+    --   return {
+    --     require("mcphub.extensions.avante").mcp_tool(),
+    --   }
+    -- end,
     -- Additional options can be added here for future extensibility
   },
   dependencies = {

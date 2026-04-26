@@ -6,9 +6,9 @@ return {
       analysis = {
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        typeCheckingMode = "basic",       -- or "strict"
+        typeCheckingMode = "basic", -- or "strict"
       },
-      pythonPath = python_env.get_path(), -- custom env detection
+      -- pythonPath = python_env.get_path(), -- custom env detection
     },
   },
 }

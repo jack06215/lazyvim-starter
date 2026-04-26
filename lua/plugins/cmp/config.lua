@@ -5,7 +5,6 @@ local M = {
   dependencies = {
     { "hrsh7th/cmp-buffer" }, -- buffer completions
     { "riton/cmp-path", branch = "feature/get_cwd_array" }, -- path completions
-    { "hrsh7th/cmp-cmdline" }, -- cmdline completions
     { "hrsh7th/cmp-calc" },
     { "f3fora/cmp-spell" },
     { "hrsh7th/cmp-emoji" },
@@ -39,7 +38,6 @@ M.config = function()
     natdat = "[NDat]",
   }
 
-
   ---@type table<integer, integer>
   local modified_priority = {
     [types.lsp.CompletionItemKind.Variable] = types.lsp.CompletionItemKind.Method,
@@ -60,7 +58,7 @@ M.config = function()
         local bufs = {}
         for _, bufn in ipairs(vim.api.nvim_list_bufs()) do
           local buf_size = vim.api.nvim_buf_get_offset(bufn, vim.api.nvim_buf_line_count(bufn))
-          if buf_size < 10 * 1024 then
+          if buf_size < 1024 * 1024 then
             table.insert(bufs, bufn)
           end
         end
@@ -122,14 +120,16 @@ M.config = function()
       comparators = {
         compare.offset,
         compare.exact,
-        -- function(entry1, entry2) -- sort by length ignoring "=~"
-        --   local len1 = string.len(string.gsub(entry1.completion_item.label, "[=~()_]", ""))
-        --   local len2 = string.len(string.gsub(entry2.completion_item.label, "[=~()_]", ""))
-        --   if len1 ~= len2 then
-        --     return len1 - len2 < 0
-        --   end
-        -- end,
-        compare.recently_used, ---@diagnostic disable-line
+        compare.score,
+        compare.recently_used,
+        compare.locality,
+        function(entry1, entry2) -- sort by length ignoring "=~"
+          local len1 = string.len(string.gsub(entry1.completion_item.label, "[=~()_]", ""))
+          local len2 = string.len(string.gsub(entry2.completion_item.label, "[=~()_]", ""))
+          if len1 ~= len2 then
+            return len1 - len2 < 0
+          end
+        end,
         function(entry1, entry2) -- sort by compare kind (Variable, Function etc)
           local kind1 = modified_kind(entry1:get_kind())
           local kind2 = modified_kind(entry2:get_kind())
